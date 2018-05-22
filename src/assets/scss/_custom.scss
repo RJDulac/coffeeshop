@@ -1,0 +1,132 @@
+// Fade effect mixin
+@mixin faded_black() {
+  background: linear-gradient(to bottom, rgba(0,0,0,.7) 20%, rgba(0,0,0,.3));
+}
+
+//Bellefair fonts
+$bellefair: 'Bellefair', serif;
+
+.container {
+  //center container
+  @include xy-grid-container();
+}
+
+
+.site-header {
+  background-size: cover;
+  position: relative;
+  height: 100vh; //viewport height
+  background-image: url(../img/featured/small/home.jpg);
+  @include breakpoint(medium) {
+    background-image: url(../img/featured/medium/home.jpg);
+  }
+  @include breakpoint(large) {
+    background-image: url(../img/featured/large/home.jpg);
+  }
+  //nest sass style
+  .header-content {
+    padding-top: rem-calc(30);
+    //more nesting
+    .top-section {
+      @include xy-grid();
+      @include flex-align(center, top);
+      //Position and z-index to load logo and menu after fade_black mixin
+      position: relative;
+      z-index: 1;
+      .logo {
+        @include xy-cell(6);
+        @include flex-align(center,middle);
+        @include breakpoint(medium) {
+          @include xy-cell(25%);
+        }
+        img {
+          @include flex-align
+        }
+      }
+    }
+    .bottom-section {
+      @include margin(1);
+      @include breakpoint(medium) {
+        height: rem-calc(230);
+        @include flex();
+        @include flex-align(center, bottom);
+      }
+      .slogan {
+        color: $white;
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        @include font-bold(900);
+        @include text-transform(uppercase);
+
+      }
+
+    }
+  }
+  &:after {
+    @include faded_black();
+    @include position(absolute, 0,0,0,0);
+    content: "";
+    @include box(100%,100%);
+  }
+}
+//nest but not too much
+.menus {
+  //full width for mobile
+  @include xy-cell();
+  @include breakpoint(medium) {
+    @include xy-cell(75%); //take up rest of space to right of logo
+  }
+  //social menu
+  .social-menu {
+    @include menu-base();
+    @include flex-align(center, middle);
+    @include breakpoint(medium) {
+      @include flex-align(right, middle);
+    }
+    a {
+      &:before {
+        display: inline-block;
+        font-family: "fontawesome";
+        font-size: rem-calc(30);
+        color: $white;
+        //smooth font-size
+        -webkit-font-smoothing: antialiased;
+        content: "\f08e";
+      }
+      &[href*="facebook.com"]::before {content: "\f082";}//facebook unicode
+      &[href*="twitter.com"]::before {content: "\f099";}//twitter unicode
+      &[href*="instagram.com"]::before {content: "\f16d";}//instagram unicode
+      &[href*="youtube.com"]::before {content: "\f16a";}//youtube unicode
+
+
+    }
+  }
+  .title-bar {
+    background-color: darken($primary-color, 10); //sass function- second parameter is the amount of darkness
+  }
+  //Main navigation for interior pages
+  .main-navigation {
+    @include menu-base();
+    @include flex-align(right, middle);
+    @include breakpoint(small only) {
+      background-color: $primary-color;
+    }
+    li {
+      //affects small vesion only
+      @include breakpoint(small only) {
+        width: 100%;
+        text-align: center;
+      }
+      }
+      a {
+        @include text-transform(uppercase);
+        @include font-bold(700);
+        font-size: rem-calc(16);
+
+        &:hover {
+          color: $secondary-color;
+      }
+    }
+  }
+}
